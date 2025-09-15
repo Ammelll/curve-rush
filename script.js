@@ -8,6 +8,7 @@ let interval;
 let width = 800;
 let height = 800;
 let p3x;
+let previousSlope = 1;
 class BezierCurve{
     constructor(p0,p1,p2,p3){
         this.p0 = p0;
@@ -25,19 +26,23 @@ class Ball{
         this.pos.y = this.pos.y+this.velocity.y;
 
         let curve = getBezierCurve(this.pos.x);
+
         if(curve != undefined){
             let t = getTForX(curve,this.pos.x)
-            let tPrev = getTForX(curve,this.pos.x-10)
             circle(this.pos.x,evaluateBezier(curve.p0.y,curve.p1.y,curve.p2.y,curve.p3.y,t,20))
             let y = evaluateBezier(curve.p0.y,curve.p1.y,curve.p2.y,curve.p3.y,t);
-            let yPrev = evaluateBezier(curve.p0.y,curve.p1.y,curve.p2.y,curve.p3.y,tPrev);       
-            if(y > yPrev+5){
-                this.velocity.y = -5;
-            }
+            //3{(1−t)2(P1−P0)+2t(1−t)(P2−P1)+t2(P3−P2)}
+            let slope = -1*3*((1-t)**2*(curve.p1.y-curve.p0.y)+2*t*(1-t)*(curve.p2.y-curve.p1.y)+t**2*(curve.p3.y-curve.p2.y)); 
             if (this.pos.y-15 > y ) {
                 this.pos.y = y-15;
-                // this.velocity
+                if(slope > 0){
+                }
             }
+            if(Math.sign(slope) != Math.sign(previousSlope) && Math.abs(slope-previousSlope) > 100 && Math.abs(this.pos.y - y) < 50){
+                this.velocity.y = -10;
+            }
+            previousSlope = slope;
+
         }
 
         circle(this.pos.x,this.pos.y,25);
@@ -62,7 +67,7 @@ function setup(){
     initiateRoad();
 }
 function randomY(){
-    return height/2 + ((random()-0.5)*100)
+    return height/2 + ((random()-0.5)*200)
 }
 function initiateRoad(){
     for(let i = 0; i < width+interval; i+=interval){
@@ -79,7 +84,7 @@ function draw(){
     ball.draw();
     ball.velocity.add(createVector(0,0.5))
     if(mouseIsPressed){
-        ball.velocity.add(createVector(0.1,0));
+        ball.velocity.add(createVector(0.1,1));
     }
     for(let segment of road){
         segment.p0.x -=Math.min(ball.velocity.x,5);
