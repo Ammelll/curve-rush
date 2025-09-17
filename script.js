@@ -9,7 +9,7 @@ const randomY = () => (height/2 + ((random()-0.5)*200));
 let ball;
 
 function setup(){
-    gravityVector = createVector(0,0.5);
+    gravityVector = createVector(0,0.2);
     ball = new Ball(createVector(300,300),createVector(0,0))
     createCanvas(width,height);
     background(200);
@@ -48,7 +48,7 @@ function drawRoad() {
     for(const segment of road){
         const bezArgs = [];
         for (const point of segment ) {
-            point.x -= Math.min(ball.velocity.x,5);
+            point.x -= min(ball.velocity.x,5);
             bezArgs.push(point.x,point.y);
         }
         bezier(...bezArgs);
