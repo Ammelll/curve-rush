@@ -13,9 +13,8 @@ class Ball{
 
         if(curve == undefined){
             return circle(this.pos.x,this.pos.y,25);
-f
         }
-        const t = Ball.getTForX(curve,this.pos.x)
+        const t = curve.getTForX(this.pos.x)
         const y = bezierPoint(curve[0].y,curve[1].y,curve[2].y,curve[3].y,t);
         //3{(1−t)2(P1−P0)+2t(1−t)(P2−P1)+t2(P3−P2)}
         const slope = -1*3*((1-t)**2*(curve[1].y-curve[0].y)+2*t*(1-t)*(curve[2].y-curve[1].y)+t**2*(curve[3].y-curve[2].y)); 
@@ -38,36 +37,8 @@ f
         circle(this.pos.x,this.pos.y,25);
     }
 
-    static getBezierCurve(x){
-    for(let curve of road){
-        if(curve[0].x < x && curve[3].x > x){
-            return curve;
-        }
-    }
-}
-    static boundVelocity(velocity){
+    static boundVelocity(velocity) {
         return max(0,min(velocity,5))
     }
-    static getTForX(curve, targetX, maxIterations = 100, epsilon = 0.1) {
-        let t0 = 0;
-        let t1 = 1;
-        let tMid;
 
-        for (let i = 0; i < maxIterations; i++) {
-            tMid = (t0 + t1) / 2;
-            let x = bezierPoint(curve[0].x, curve[1].x, curve[2].x, curve[3].x, tMid);
-
-            if (abs(x - targetX) < epsilon) {
-                return tMid;
-            }
-
-            if (x < targetX) {
-                t0 = tMid;
-            } else {
-                t1 = tMid;
-            }
-        }
-
-        return tMid;
-    }
 }
