@@ -1,3 +1,4 @@
+//https://gamedev.stackexchange.com/questions/37802/collision-detection-with-curves
 class Ball{
     constructor(pos,velocity) {
         this.pos = pos;
