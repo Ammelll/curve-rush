@@ -12,25 +12,17 @@ class Ball{
     }
     
     draw() {
+        circle(this.pos.x,this.pos.y,25);
         this.incrementYPosition();
         let curve = Ball.getBezierCurve(this.pos.x);
-
-        if(curve == undefined){
-            return circle(this.pos.x,this.pos.y,25);
-        }
+        if(curve == undefined) return;
         const t = Ball.getTForX(curve,this.pos.x)
         const y = bezierPoint(curve[0].y,curve[1].y,curve[2].y,curve[3].y,t);
         this.slope = getSlope(curve,t);
-
         this.handleGrounded(y);
-
         this.applyGravity(gravityVector);
-
         this.handleJump(y);
         previousSlope = this.slope;
-
-
-        circle(this.pos.x,this.pos.y,25);
     }
     changingSlope(y){
         return abs(this.slope-previousSlope) > 200 && abs(this.pos.y - y) <= 12.5
@@ -53,7 +45,7 @@ class Ball{
         gravityVector = [0,0.1];
     }
     incrementYPosition(){
-        this.pos.y = this.pos.y+this.velocity.y;
+        this.pos.y+=this.velocity.y;
     }
     applyGravity(gravityVector){
         this.velocity.x+= gravityVector[0];

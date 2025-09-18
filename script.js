@@ -3,7 +3,7 @@ let road = [];
 const NUM_ROAD_SEGMENTS = 4;
 const height = window.innerHeight*.9, width = height;
 const interval = width/NUM_ROAD_SEGMENTS;
-const randomY = () => (height/2 + ((random()-0.5)*200));
+const randomY = () => (height-200 + ((random()-0.5)*200));
 let ball;
 
 function setup(){
@@ -44,7 +44,7 @@ function drawRoad() {
     for(const segment of road){
         const bezArgs = [];
         for (const point of segment ) {
-            point.x -= min(ball.velocity.x,5);
+            point.x -= ball.velocity.x;
             bezArgs.push(point.x,point.y);
         }
         bezier(...bezArgs);
