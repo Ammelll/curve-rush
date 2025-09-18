@@ -3,7 +3,6 @@ let road = [];
 const NUM_ROAD_SEGMENTS = 4;
 const height = window.innerHeight*.9, width = height;
 const interval = width/NUM_ROAD_SEGMENTS;
-let previousSlope = 1;
 const randomY = () => (height/2 + ((random()-0.5)*200));
 let ball;
 
