@@ -5,12 +5,12 @@ const height = window.innerHeight*.9, width = height;
 const interval = width/NUM_ROAD_SEGMENTS;
 let previousSlope = 1;
 let gravityVector;
-const randomY = () => (height/2 + ((random()-0.5)*200));
+
 let ball;
 
 function setup(){
     gravityVector = createVector(0,0.2);
-    ball = new Ball(createVector(300,300),createVector(0,0))
+    ball = new Ball(createVector(300,300),createVector(0,0));
     createCanvas(width,height);
     background(200);
     start = createVector(0,height/2)
@@ -29,15 +29,11 @@ function draw(){
     if(mouseIsPressed){
         ball.velocity.add(createVector(0.1,1));
     }
-    drawRoad();
-    road = road.filter(segment => segment[3].x > 0);
-    if (road.length <= NUM_ROAD_SEGMENTS) {
-        BCurve.makeBezier(NUM_ROAD_SEGMENTS);
-    }
-}
-
-function drawRoad() {
     for(const segment of road){
         segment.draw();
+    }
+    road = road.filter(segment => segment.points[3].x > 0);
+    if (road.length <= NUM_ROAD_SEGMENTS) {
+        BCurve.makeBezier(NUM_ROAD_SEGMENTS);
     }
 }

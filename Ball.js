@@ -9,7 +9,8 @@ class Ball{
     draw() {
         this.pos.y = this.pos.y+this.velocity.y;
 
-        let curve = Ball.getBezierCurve(this.pos.x);
+        const bCurve = BCurve.getBezierCurve(this.pos.x);
+        const curve = bCurve.points;
 
         if(curve == undefined){
             return circle(this.pos.x,this.pos.y,25);
@@ -24,21 +25,18 @@ class Ball{
             this.pos.y = y-12.5;
             this.velocity.x-=0.02;
         }
-        this.velocity.x = Ball.boundVelocity(this.velocity.x);
+        this.velocity.x = this.boundVelocity(this.velocity.x);
         //B″(t) = 6(1-t)(P₂ - 2P₁ + P₀) + 6t(P₃ - 2P₂ + P₁) = 6[ (1-t)(P₂ - 2P₁ + P₀) + t(P₃ - 2P₂ + P₁) ]
         const slopePrime = 6*(1-t)*(curve[2].y-2*curve[1].y+curve[0].y) + 6*t*(curve[3].y-2*curve[2].y + curve[1].y);
         if(abs(slope-previousSlope) > 200 && abs(this.pos.y - y) <= 12.5){
             this.velocity.y = -2*this.velocity.x;
         }
-        console.log(this.velocity.x)
         previousSlope = slope;
-
-
         circle(this.pos.x,this.pos.y,25);
     }
 
-    static boundVelocity(velocity) {
-        return max(0,min(velocity,5))
+    boundVelocity() {
+        return max(0,min(this.velocity.x,5))
     }
 
 }
