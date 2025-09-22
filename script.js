@@ -30,8 +30,10 @@ function makeBezier(i) {
 function draw(){
     background(220);
     ball.draw();
+    text(ball.getScore(), width/2, 100);
+    line(0, 150, width, 150);
     if(mouseIsPressed){
-        ball.velocity.add(createVector(0.3,1));
+        ball.velocity.add(createVector(0.3,0.5));
     }
     drawRoad();
     road = road.filter(segment => segment[3].x > 0);
