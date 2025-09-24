@@ -13,11 +13,12 @@ class Ball{
         this.velocity = velocity;
         this.slope = 0;
         this.color = 255;
+        this.goal_height = 300;
     }
     
     draw() {
         fill(this.color)
-        circle(this.pos.x,this.pos.y,25);
+        circle(this.pos.x-12.5,this.pos.y,25);
         noFill()
         this.incrementYPosition();
         let curve = Ball.getBezierCurve(this.pos.x);
@@ -35,7 +36,8 @@ class Ball{
     }
     handleJump(y){
         if(this.changingSlope(y)){
-            this.velocity.y = -2.5*this.velocity.x;
+            this.velocity.y = -(previousSlope)/200*this.velocity.x;
+            this.velocity.x += (previousSlope)/3200*this.velocity.x;
         }
     }
     getScore(){
@@ -63,7 +65,7 @@ class Ball{
     }
     incrementYPosition(){
         this.pos.y+=this.velocity.y;
-        if(!scoreLineCrossed && this.pos.y < 150){
+        if(!scoreLineCrossed && this.pos.y < this.goal_height){
             scoreLineCrossed = true;
             score++;
         }
@@ -71,7 +73,7 @@ class Ball{
     applyGravity(gravityVector){
         this.velocity.x+= gravityVector[0];
         this.velocity.y += gravityVector[1];
-        this.velocity.x = min(this.velocity.x,5)
+        this.velocity.x = min(this.velocity.x,10)
     }
 
     static getBezierCurve(x){

@@ -7,7 +7,7 @@ const randomY = () => (height-200 + ((random()-0.5)*200));
 let ball;
 
 function setup(){
-    ball = new Ball(createVector(300,300),createVector(0,0));
+    ball = new Ball(createVector(300,height),createVector(0,0));
     createCanvas(width,height);
     background(200);
     start = createVector(0,height/2)
@@ -31,7 +31,7 @@ function draw(){
     background(220);
     ball.draw();
     text(ball.getScore(), width/2, 100);
-    line(0, 150, width, 150);
+    line(0, ball.goal_height, width, ball.goal_height);
     if(mouseIsPressed){
         ball.velocity.add(createVector(0.3,0.5));
     }
